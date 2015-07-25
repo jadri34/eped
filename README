@@ -1,0 +1,21 @@
+Este es un proyecto que contiene código para ayudar a seguir la asignatura de
+Estrategias de Programación y Estructuras de Datos de la UNED.
+
+Contiene un proyecto de Eclipse "eped", con los siguientes paquetes:
+
+* eped.base.original
+
+Tiene los interfaces e implementaciones copiadas tan literalmente como ha
+sido posible de las transparencias, pero haciendo que compile:
+
+* Se han añadido métodos que no estaban descritos o implementados, haciendo
+  que lancen UnsupportedOperationException- su uso o de cualquier otro
+  método que los use lanzará la excepción en tiempo de ejecución
+
+* Corregida un poco la indentación/espaciado
+
+* Añadidas/quitadas algunas anotaciones para quitar warnings
+
+* Añadidos algunos métodos contains descritos en las transparencias a las
+  clases que no los traían ya (hay contains que no se han incorporado a las
+  clases, pues ya tenían uno implementado)

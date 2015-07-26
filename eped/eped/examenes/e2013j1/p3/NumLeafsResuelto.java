@@ -1,6 +1,5 @@
 package eped.examenes.e2013j1.p3;
 
-import eped.base.original.IteratorIF;
 import eped.base.original.ListIF;
 import eped.base.original.TreeIF;
 
@@ -18,9 +17,9 @@ public class NumLeafsResuelto<T> extends NumLeafs<T> {
 		// si tiene hijos, el numero de hojas es la suma del numero de hojas
 		// de los hijos
 		int leafs = 0;
-		IteratorIF<TreeIF<T>> it = cs.getIterator();
-		while(it.hasNext()) {
-			leafs += ((NumLeafsResuelto<T>) it.getNext()).numLeafs();
+		while(!cs.isEmpty()) {
+			leafs += ((NumLeafsResuelto<T>) cs.getFirst()).numLeafs();
+			cs = cs.getTail();
 		}
 		return leafs;
 	}

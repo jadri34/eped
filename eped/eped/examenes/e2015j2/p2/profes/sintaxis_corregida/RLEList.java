@@ -1,4 +1,4 @@
-package eped.examenes.e2015j2.p2.profes.verbatim;
+package eped.examenes.e2015j2.p2.profes.sintaxis_corregida;
 
 import eped.base.original.IteratorIF;
 import eped.base.original.ListDynamic;
@@ -36,13 +36,13 @@ public class RLEList<T> {
 	/* Private method meant to carry out the actual compression */
 	/* @param the input (list) to be compressed */
 
-	private RLEList<T> compress(ListIF<T> input, T elem, int count) {
+	private ListIF<RLEPair<T>> compress(ListIF<T> input, T elem, int count) {
 		// caso base: entrada vacía
 		if (input.isEmpty()) {
 			ListDynamic<RLEPair<T>> init = new ListDynamic<RLEPair<T>>();
 			if (elem == null)
 				return init;
-			RLEPair<T> aPair = new RLEPair(elem, count);
+			RLEPair<T> aPair = new RLEPair<T>(elem, count);
 			return init.insert(aPair);
 		}
 		// Empieza el conteo de un nuevo grupo de elementos repetidos
@@ -52,7 +52,7 @@ public class RLEList<T> {
 		if (elem.equals(input.getFirst()))
 			return compress(input.getTail(), elem, count++);
 		// Termina el conteo de un grupo de elementos repetidos
-		RLEPair<T> aPair = new RLEPair(elem, count);
+		RLEPair<T> aPair = new RLEPair<T>(elem, count);
 		return compress(input.getTail(), null, 0).insert(aPair);
 	}
 
@@ -70,18 +70,18 @@ public class RLEList<T> {
 	/* RLE pair. */
 	private ListIF<RLEPair<T>> collapse (){
 		ListIF<RLEPair<T>> auxList = new ListDynamic<RLEPair<T>> ();
-		IteratorIF<ListIF<RLEPair<T>> dIter = data.getIterator ();
-		RLEPair<T> auxPair, dPair;
+		IteratorIF<RLEPair<T>> dIter = data.getIterator();
+		RLEPair<T> auxPair = null, dPair;
 		while (dIter.hasNext()) {
-			IteratorIF<ListIF<RLEPair<T>> auxIter = auxList.getIterator();
-			dPair = iter.getNext();
+			IteratorIF<RLEPair<T>> auxIter = auxList.getIterator();
+			dPair = dIter.getNext();
 			boolean found = false;
 			while (auxIter.hasNext() && !found) {
 				auxPair = auxIter.getNext ();
 				found = (auxPair.getElement().equals(dPair.getElement()));
 			}
 			if (found)
-				auxPair.setFreq (auxPair.getFreq() + dPair.getFreq())
+				auxPair.setFreq (auxPair.getFreq() + dPair.getFreq());
 			else
 				auxList.insert (dPair); /* comentar que no importa el orden */
 		}
@@ -91,8 +91,8 @@ public class RLEList<T> {
 	/* Private method to find the most repeated element */
 	private T findMax (ListIF<RLEPair<T>> aList){
 		RLEPair<T> aPair;
-		RLEPair<T> mPair = new RLEPair (null, 0);
-		IteratorIF<ListIF<RLEPair<T>> aIter = aList.getIterator ();
+		RLEPair<T> mPair = new RLEPair<T>(null, 0);
+		IteratorIF<RLEPair<T>> aIter = aList.getIterator ();
 		while (aIter.hasNext()){
 		aPair = aIter.getNext();
 		if (aPair.getFreq()>mPair.getFreq()) mPair = aPair;
@@ -104,7 +104,7 @@ public class RLEList<T> {
 	private ListIF<T> expand(ListIF<RLEPair<T>> rList, T e, int reps) {
 		if (reps == 0) {
 			if (rList.isEmpty())
-				return rList;
+				return new ListDynamic<T>();
 			else {
 				T elem = rList.getFirst().getElement();
 				int freq = rList.getFirst().getFreq();

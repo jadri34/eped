@@ -15,7 +15,7 @@ public class RLEListTest {
 		ListIF<Integer> list = new ListDynamic<Integer>();
 		int[] nums = new int[] { 1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1};
 		for(int i = nums.length - 1; i >= 0; i--) {
-			list.insert(i);
+			list.insert(nums[i]);
 		}
 		RLEListIF<Integer> rleList = createRLEList(list);
 		Assert.assertEquals(12, rleList.size());

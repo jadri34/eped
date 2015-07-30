@@ -3,11 +3,12 @@ package eped.examenes.e2015j2.p2.profes.sintaxis_corregida;
 import eped.base.original.IteratorIF;
 import eped.base.original.ListDynamic;
 import eped.base.original.ListIF;
+import eped.examenes.e2015j2.p2.profes.verbatim.RLEListIF;
 
 /* Representa una lista comprimida mediante RLE (run-length *
  * encoding) */
 
-public class RLEList<T> {
+public class RLEList<T> implements RLEListIF<T> {
 	private int size;
 	private T mode;
 	private ListIF<RLEPair<T>> data;
@@ -113,5 +114,15 @@ public class RLEList<T> {
 		} else {
 			return expand(rList, e, reps - 1).insert(e);
 		}
+	}
+	
+	@Override
+	public int size() {
+		return size;
+	}
+	
+	@Override
+	public T mode() {
+		return mode;
 	}
 }

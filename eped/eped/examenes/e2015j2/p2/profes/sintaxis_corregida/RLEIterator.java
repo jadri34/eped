@@ -4,7 +4,7 @@ import eped.base.original.IteratorIF;
 import eped.base.original.ListIF;
 
 /* Implements the RLEList iterator interface */
-public class RLEIterator<T> implements IteratorIF<RLEPair<T>>{
+public class RLEIterator<T> implements IteratorIF<T>{
 	private RLEPair<T> iPair;
 	private ListIF<RLEPair<T>> iList;
 	public RLEIterator(ListIF<RLEPair<T>> rList){
@@ -17,7 +17,7 @@ public class RLEIterator<T> implements IteratorIF<RLEPair<T>>{
 	}
 
 	/* En el material adicional, este método aparece como hasNext() */
-	public RLEPair<T> getNext(){
+	public T getNext(){
 		if (iPair.getFreq() == 0){
 			if (iList.isEmpty()) return null;
 			else {
@@ -26,7 +26,7 @@ public class RLEIterator<T> implements IteratorIF<RLEPair<T>>{
 			}
 		}
 		iPair.setFreq(iPair.getFreq()-1);
-		return iPair;
+		return iPair.getElement();
 	}
 	
 	@Override

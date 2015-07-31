@@ -125,4 +125,8 @@ public class RLEList<T> implements RLEListIF<T> {
 	public T mode() {
 		return mode;
 	}
+
+	public ListIF<RLEPair<T>> getData() {
+		return data;
+	}
 }

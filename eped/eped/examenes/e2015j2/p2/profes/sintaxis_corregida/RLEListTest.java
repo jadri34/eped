@@ -1,7 +1,10 @@
 package eped.examenes.e2015j2.p2.profes.sintaxis_corregida;
 
-import org.junit.Assert;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import eped.base.original.ListDynamic;
@@ -24,6 +27,16 @@ public class RLEListTest {
 	public void testDecompress() {
 		Assert.assertEquals(rleListContentsAsListIF(), createRLEList().decompress());
 	}
+
+	@Test
+	public void testIterator() {
+		RLEIterator<Integer> iterator = new RLEIterator<Integer>(((RLEList<Integer>) createRLEList()).getData());
+		List<Integer> collected = new ArrayList<Integer>();
+		while(iterator.hasNext()) {
+			collected.add(iterator.getNext());
+		}
+		Assert.assertEquals(Arrays.asList(rleListContents()), collected);
+	}
 	
 	public RLEListIF<Integer> createRLEList() {
 		ListIF<Integer> list = rleListContentsAsListIF();
@@ -33,15 +46,15 @@ public class RLEListTest {
 
 	public ListIF<Integer> rleListContentsAsListIF() {
 		ListIF<Integer> list = new ListDynamic<Integer>();
-		int[] nums = rleListContents	();
+		Integer[] nums = rleListContents();
 		for(int i = nums.length - 1; i >= 0; i--) {
 			list.insert(nums[i]);
 		}
 		return list;
 	}
 
-	public int[] rleListContents() {
-		return new int[] { 1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1};
+	public Integer[] rleListContents() {
+		return new Integer[] { 1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1};
 	}
 
 	public RLEListIF<Integer> createRLEList(ListIF<Integer> input) {

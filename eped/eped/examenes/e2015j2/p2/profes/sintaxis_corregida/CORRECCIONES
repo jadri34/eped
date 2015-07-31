@@ -1,0 +1,89 @@
+Describo un poco los cambios que he tenido que hacer para que lo proporcionado
+por el Equipo Docente compile (he intentado cambiar lo mínimo). Lo que tenéis
+es que el package "sintaxis_corregida" contiene copias de las clases de
+"verbatim" para que puedan compilar.
+
+RLEPair:
+
+No he tenido que hacer nada; simplemente como el constructor no tiene
+declaración de visibilidad, sólo lo puedo usar desde el mismo package, así que
+en el package "sintaxis_corregida" necesito el mío propio.
+
+RLEList:
+
+1) He añadido que implemente el interfaz, pequeño detalle, ¡pero importante!
+
+2) Declaran que el método compress devuelve una RLEList<T>, pero realmente
+   devuelve un ListIF<RLEPair<T>>
+
+3) He corregido unos cuantos warnings del compilador sobre genéricos que
+   deberían declararse y se han saltado
+
+4) En collapse y en findMax hacen cosas equivalentes a:
+
+       ListIF<T> x = ...;
+       IteratorIF<ListIF<T>> it = x.getIterator();
+
+   Lo cual es incorrecto; el iterador de una lista de T es un iterador de T (es
+   decir; si yo itero la lista [1, 2, 3, 4], el iterador me va devolviendo 1, 2,
+   3 y 4- es decir, enteros [el tipo de la lista] y no listas de enteros.
+
+   Lo curioso es que en todos estos errores también hay un '>' que falta para
+   la declaración del genérico, lo que me hace pensar que originalmente esto
+   estaba bien y alguien lo "corrigió".
+
+5) Error menor, en collapse auxPair no se inicializa y el analizador de Java se
+   queja ya que podría intentar leerse el valor de la variable antes de meterse,
+   lo que está prohibido. En realidad, parece que el código está bien y eso no
+   pasa- el analizador no es perfecto y a veces se "equivoca".
+
+6) Falta un ; en la línea 85, dentro de collapse
+
+7) El caso base de expand intenta devolver rList para devolver una lista vacía.
+   rList ciertamente es una lista vacía, pero no del tipo que debería ser.
+
+8) No es un problema per se, pero he tenido que añadir métodos para obtener
+   size y mode para poder construir los test. También permito acceder a data
+   porque si no no se puede construir fácilmente el iterador para verificarlo.
+
+RLEIterator:
+
+1) Una vez más, hay un pequeño lío de genéricos. La declaración del tipo
+   genérico es muy rara:
+
+       public class RLEIterator<RLEPair<T>> implements IteratorIF<RLEPair<T>>{
+
+   , que quiere decir más o menos que es un iterador de pares de T, pero según
+   el enunciado, debería devolvernos los elementos de la lista descomprimida,
+   que son T, no pares de T. La declaración RLEIterator<RLEPair<T>> es
+   incorrecta, sólo se pueden poner tipos genéricos dentro de <> (que yo
+   recuerde, los genéricos de Java no son simples y los tengo bastante
+   oxidados).
+
+2) Falta declarar el tipo de retorno de hasNext y next()
+
+3) He implementado reset de manera que peta, pero si no se pone una
+   implementación, no deja compilar.
+
+--------------------------------------------------------------------------------
+
+Los tests
+
+He puesto como en los otros ejercicios unos tests unitarios para verificar el
+comportamiento de la aplicación, son 4:
+
+1) testSize: comprueba el cálculo de size(). Como lo hacen cogiendo la longitud
+   de la lista original (yo creo que es un poco de trampa, pero bueno), funciona
+   perfectamente
+
+2) testMode: también está bien implementado
+
+3) testDecompress: no parece funcionar bien, el assert peta:
+
+       java.lang.AssertionError: expected:<ListDynamic ­‐ [1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1]> but was:<ListDynamic ­‐ [1, 1, 2, 1]>
+
+   , es decir, decompress nos debería dar la lista original, pero da una
+   sublista extraña, no acierto a atinar por qué.
+
+4) testIterator: falla de la misma manera.
+

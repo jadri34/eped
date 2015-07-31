@@ -11,15 +11,27 @@ import eped.examenes.e2015j2.p2.profes.verbatim.RLEListIF;
 public class RLEListTest {
 
 	@Test
-	public void test() {
+	public void testSize() {
+		Assert.assertEquals(12, createRLEList().size());
+	}
+
+	@Test
+	public void testMode() {
+		Assert.assertEquals((Integer) 1, createRLEList().mode());
+	}
+
+	public RLEListIF<Integer> createRLEList() {
 		ListIF<Integer> list = new ListDynamic<Integer>();
-		int[] nums = new int[] { 1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1};
+		int[] nums = rleListContents	();
 		for(int i = nums.length - 1; i >= 0; i--) {
 			list.insert(nums[i]);
 		}
 		RLEListIF<Integer> rleList = createRLEList(list);
-		Assert.assertEquals(12, rleList.size());
-		Assert.assertEquals((Integer) 1, rleList.mode());
+		return rleList;
+	}
+
+	public int[] rleListContents() {
+		return new int[] { 1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1};
 	}
 
 	public RLEListIF<Integer> createRLEList(ListIF<Integer> input) {

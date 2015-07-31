@@ -20,14 +20,24 @@ public class RLEListTest {
 		Assert.assertEquals((Integer) 1, createRLEList().mode());
 	}
 
+	@Test
+	public void testDecompress() {
+		Assert.assertEquals(rleListContentsAsListIF(), createRLEList().decompress());
+	}
+	
 	public RLEListIF<Integer> createRLEList() {
+		ListIF<Integer> list = rleListContentsAsListIF();
+		RLEListIF<Integer> rleList = createRLEList(list);
+		return rleList;
+	}
+
+	public ListIF<Integer> rleListContentsAsListIF() {
 		ListIF<Integer> list = new ListDynamic<Integer>();
 		int[] nums = rleListContents	();
 		for(int i = nums.length - 1; i >= 0; i--) {
 			list.insert(nums[i]);
 		}
-		RLEListIF<Integer> rleList = createRLEList(list);
-		return rleList;
+		return list;
 	}
 
 	public int[] rleListContents() {

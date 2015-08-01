@@ -1,0 +1,11 @@
+En realidad en este no hay muchos problemas, sólo:
+
+1) Escriben Iterator en vez de IteratorIF
+2) En numLeaves se les ha colado un espacio en "tree Aux" que debería ser
+   "treeAux"
+3) En numLeaves intentan usar un constructor del interfaz ListIF- algo que no se
+   puede hacer porque los interfaces no se pueden construir (al no tener
+   implementación)- hay que construir instancias de clases, por ejemplo usando
+   ListDynamic en vez de ListIF
+
+, salvo estos errores el algoritmo es válido

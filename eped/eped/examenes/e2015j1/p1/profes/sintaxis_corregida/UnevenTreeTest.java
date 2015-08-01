@@ -53,45 +53,6 @@ public class UnevenTreeTest {
 	}
 
 	@Test
-	public void testABis() {
-		// El árbol del examen, ligeramente modificado:
-		//
-		//   10
-		//  /  \
-		// 1    6
-		//     / \
-		//    2   3
-		//         \
-		//          7
-		//         / \
-		//        5   -2
-		//           /  \
-		//          6    10
-
-
-		TreeIF<Integer> b = createTree(10);
-		TreeIF<Integer> c = createTree(6);
-		TreeIF<Integer> d = createTree(-2);
-		d.addChild(c);
-		d.addChild(b);
-		TreeIF<Integer> e = createTree(5);
-		TreeIF<Integer> f = createTree(7);
-		f.addChild(e);
-		f.addChild(d);
-		TreeIF<Integer> h = createTree(3);
-		h.addChild(f);
-		TreeIF<Integer> i = createTree(2);
-		TreeIF<Integer> j = createTree(6);
-		j.addChild(i);
-		j.addChild(h);
-		TreeIF<Integer> k = createTree(1);
-		TreeIF<Integer> l = createTree(10);
-		l.addChild(k);
-		l.addChild(j);
-		assertEquals(true, isFullyUneven(l));
-	}
-	
-	@Test
 	public void testB() {
 		// El árbol del examen
 		//

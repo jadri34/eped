@@ -76,14 +76,45 @@ comportamiento de la aplicación, son 4:
    de la lista original (yo creo que es un poco de trampa, pero bueno), funciona
    perfectamente
 
-2) testMode: también está bien implementado
+2) testMode: devuelve el valor correcto, pero como veremos más adelante, su
+   implementación es problemática
 
-3) testDecompress: no parece funcionar bien, el assert peta:
+3) testDecompress: no funciona bien, el assert peta:
 
        java.lang.AssertionError: expected:<ListDynamic ­‐ [1, 1, 1, 2, 2, 2, 2, 2, 3, 1, 1, 1]> but was:<ListDynamic ­‐ [1, 1, 2, 1]>
 
    , es decir, decompress nos debería dar la lista original, pero da una
-   sublista extraña, no acierto a atinar por qué.
+   sublista extraña.
 
 4) testIterator: falla de la misma manera.
 
+He corregido los bugs en el módulo "correcto", hay los siguientes problemas:
+
+1) En el método compress() en una llamada recursiva hace:
+
+       return compress(input.getTail(), elem, count++);
+
+   el error es sutil, pero fácil de entender (aunque me ha costado localizarlo):
+   al hacer count++ pretende hacer la llamada recursiva incrementando count,
+   pero el valour de count++ es count sin incrementar. Si se cambia por
+   count + 1, por ejemplo, se resuelve (también serviría ++count, pero
+   prefiero no cambiar el valor de una variable innecesariamente).
+
+2) En la última línea del método hace:
+
+       return compress(input.getTail(), null, 0).insert(aPair);
+
+   , pero haciendo getTail() se come un elemento a procesar. Si se devuelve
+   simplemente input, se resuelve el problema.
+
+3) ¡El otro error me ha vuelto loco! El problema es que dentro del constructor
+   hace compress(), que con esas correcciones funciona bien, pero luego llama
+   a computeMode(), que "sin querer", cambia data y deja información incorrecta
+   que causa errores luegos.
+
+   El problema es que para construir la lista colapsada reutiliza pairs de la
+   lista original y los modifica. No sé si he resuelto perfectamente el bug
+   (el código es un poco rocambolesco), pero duplicando un elemento en vez
+   de meter el elemento original parece que se resuelve el problema.
+
+(a parte, he añadido unos cuantos toString para que sea más fácil debugar).
